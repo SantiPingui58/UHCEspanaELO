@@ -61,9 +61,6 @@ public class DataManager {
 		 }
 		 
 		 
-		 
-		 
-		
 		 String temporada = null;
 		 for (int y = 0;y<t.getRowAmount(); y++) {
 			 if (temporada==null || temporada!= t.getString(y,2)) {
@@ -78,8 +75,40 @@ public class DataManager {
 	 
 	 }
 	 
-	
 	 
+	 
+	 public void calculateELO(List<Playable> participants) {
+			
+			for (int z=0;z<participants.size(); z++) {
+			Playable current = participants.get(0);
+			Playable next = null;
+			for (int i = 1+z;i < participants.size()-z; i++) {
+				next = participants.get(i);
+				elo(current,next);
+			}
+			}
+			
+				
+		}
+	
+	 private void elo(Playable winner, Playable loser) {
+		 int k = 48;
+		//Fórmula de ELO
+		 	double p1 = ((double) winner.getCurrentELO()/ (double) 400); 
+		    double p1_ = Math.pow(10, p1); 
+		    
+		    double p2 = ((double)loser.getCurrentELO()/(double)400); 
+		    double p2_ = Math.pow(10, p2);
+		     
+		    double d = p1_ + p2_;
+		    
+		    double ex1 = (double)p1_/(double)d;   
+		    double a1 = ((double)k*(1-(double)ex1));
+		    int a = (int)a1;
+		    winner.setCurrentELO(winner.getCurrentELO()+a);
+		    loser.setCurrentELO(loser.getCurrentELO()-a);
+		    
+	 }
 	 
 	 
 	 }
